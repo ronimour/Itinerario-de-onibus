@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+<h:head>
+	<title>Gerenciador de Linhas de ônibus</title>
+	<link type="text/css" rel="stylesheet" href="south-street/theme.css" />
+</h:head>
+<h:body>
+	<p:layout fullPage="true">
+		<p:layoutUnit position="left" width="200" header="Atividades"
+			resizable="true" closable="true" collapsible="true">
+			<h:form prependId="false">
+				<p:commandButton value="Nova Linha de ônibus"
+					actionListener="#{linhaBean.prepararAdicionarLinha}"
+					update="infosLinha2" oncomplete="dialogGerLinha2.show()" />
+
+				<p:commandButton value="Adicionar Pontos ida"
+					actionListener="#{linhaBean.prepararAdicionarLinha}"
+					update="infosPontos" oncomplete="dialogGerPontos.show()" />
+					
+				<p:commandButton value="Adicionar Pontos volta"
+					actionListener="#{linhaBean.prepararAdicionarLinha}"
+					update="infosPontosVolta" oncomplete="dialogGerPontosVolta.show()" />
+						
+			</h:form>
+		</p:layoutUnit>
+		<p:layoutUnit position="center">
+			<h1>Gerenciador de Linhas de ônibus</h1>
+			<br />
+			<h:form prependId="false">
+				<p:dataTable id="tabela" var="linha" value="#{linhaBean.linhas}">
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Código" />
+						</f:facet>
+						<h:outputText value="#{linha.codigoLinha}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Tarifa" />
+						</f:facet>
+						<h:outputText value="#{linha.tarifa}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Distância " />
+						</f:facet>
+						<h:outputText value="#{linha.distancia}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Qtd. ônibus " />
+						</f:facet>
+						<h:outputText value="#{linha.qtdOnibus}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Alterar" />
+						</f:facet>
+						<p:commandButton
+							actionListener="#{linhaBean.prepararAlterarLinha}"
+							value="Alterar" update="infosLinha"
+							oncomplete="dialogGerLinha.show()" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Excluir" />
+						</f:facet>
+						<p:commandButton actionListener="#{linhaBean.excluirLinha}"
+							value="Excluir" update="tabela" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:layoutUnit>
+	</p:layout>
+
+	<p:dialog header="Gerencia de Linha de Ônibus"
+		widgetVar="dialogGerLinha" resizable="false" modal="true"
+		showEffect="slide" width="500">
+		<h:form prependId="false">
+			<h:panelGrid id="infosLinha" columns="2" style="margin-bottom:10px">
+
+				<h:outputLabel for="codigo" value="codigo:" />
+				<h:inputText id="codigo" value="#{linhaBean.linha.codigoLinha}" />
+
+				<h:outputLabel for="tarifa" value="Tarifa:" />
+				<h:inputText id="tarifa" value="#{linhaBean.linha.tarifa}" />
+
+				<h:outputLabel for="distancia" value="distância:" />
+				<h:inputText id="diatancia" value="#{linhaBean.linha.distancia}" />
+
+				<h:outputLabel for="qtdOnibus" value="Qtd. ônibus:" />
+				<h:inputText id="qtdOnibus" value="#{linhaBean.linha.qtdOnibus}" />
+
+				<p:commandButton update="tabela" oncomplete="dialogGerLinha.hide();"
+					actionListener="#{linhaBean.alterarLinha}" value="Alterar" />
+				<p:commandButton update="tabela" oncomplete="dialogGerLinha.hide();"
+					action="#{linhaBean.gerenciarLinha}" value="Voltar" />
+
+
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+
+	<p:dialog header="Gerencia de Linha de Ônibus"
+		widgetVar="dialogGerLinha2" resizable="false" modal="true"
+		showEffect="slide" width="500">
+		<h:form prependId="false">
+			<h:panelGrid id="infosLinha2" columns="2" style="margin-bottom:10px">
+
+				<h:outputLabel for="codigo2" value="codigo:" />
+				<h:inputText id="codigo2" value="#{linhaBean.linha.codigoLinha}" />
+
+				<h:outputLabel for="tarifa2" value="Tarifa:" />
+				<h:inputText id="tarifa2" value="#{linhaBean.linha.tarifa}" />
+
+				<h:outputLabel for="distancia2" value="distância:" />
+				<h:inputText id="diatancia2" value="#{linhaBean.linha.distancia}" />
+
+				<h:outputLabel for="qtdOnibus2" value="Qtd. ônibus:" />
+				<h:inputText id="qtdOnibus2" value="#{linhaBean.linha.qtdOnibus}" />
+
+
+				<p:commandButton update="tabela"
+					oncomplete="dialogGerLinha2.hide();"
+					actionListener="#{linhaBean.adicionarLinha}" value="Inserir" />
+				<p:commandButton update="tabela"
+					oncomplete="dialogGerLinha2.hide();"
+					action="#{linhaBean.gerenciarLinha}" value="Voltar" />
+
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+
+
+	<p:dialog header="Gerencia de Linha de Ônibus"
+		widgetVar="dialogGerPontos" resizable="false" modal="true"
+		showEffect="slide" width="500">
+		<h:form prependId="false">
+			<h:panelGrid id="infosPontos" columns="1" style="margin-bottom:10px">
+
+				<h:outputLabel for="linha" value="Linhas:" />
+				<h:selectOneMenu value="#{linhaBean.linha.id}" immediate="true"
+					 valueChangeListener="#{linhaBean.setarLinha}">
+					<f:selectItem itemLabel="Escolha a Linha" itemValue=""
+						noSelectionOption="true" />
+					<f:selectItems value="#{linhaBean.linhas}" var="c"
+						itemLabel="#{c.codigoLinha}" itemValue="#{c.id}" />
+				</h:selectOneMenu>
+
+				<h:dataTable id="pontos" value="#{linhaBean.pontos}" var="p">
+
+					<h:column width="10%">
+						<h:selectBooleanCheckbox id="aceite"
+							value="#{String.valueOf(linhaBean.linha.pontosIda.contains(p))}"
+							immediate="true"
+							valueChangeListener="#{linhaBean.addPontoOnibusIda}" />
+						<h:outputLabel value="#{p.id} _ #{p.descricao}" for="aceite" />
+					</h:column>
+
+				</h:dataTable>
+
+				<p:commandButton update="tabela"
+					oncomplete="dialogGerPontos.hide();" immediate="true"
+					actionListener="#{linhaBean.adicionarLinha}" value="Salvar" />
+				<p:commandButton update="tabela"
+					oncomplete="dialogGerPontos.hide();"
+					action="#{linhaBean.gerenciarLinha}" value="Voltar" />
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+	<p:dialog header="Gerencia de Linha de Ônibus"
+		widgetVar="dialogGerPontosVolta" resizable="false" modal="true"
+		showEffect="slide" width="500">
+		<h:form prependId="false">
+			<h:panelGrid id="infosPontosVolta3" columns="1" style="margin-bottom:10px">
+
+				<h:outputLabel for="linha" value="Linhas:" />
+				<h:selectOneMenu value="#{linhaBean.linha.id}" immediate="true"
+					 valueChangeListener="#{linhaBean.setarLinha}">
+					<f:selectItem itemLabel="Escolha a Linha" itemValue=""
+						noSelectionOption="true" />
+					<f:selectItems value="#{linhaBean.linhas}" var="c"
+						itemLabel="#{c.codigoLinha}" itemValue="#{c.id}" />
+				</h:selectOneMenu>
+
+				<h:dataTable id="pontos3" value="#{linhaBean.pontos}" var="p">
+
+					<h:column width="10%">
+						<h:selectBooleanCheckbox id="aceite3"
+							value="#{String.valueOf(linhaBean.linha.pontosVolta.contains(p))}"
+							immediate="true"
+							valueChangeListener="#{linhaBean.addPontoOnibusVolta}" />
+						<h:outputLabel value="#{p.id} _ #{p.descricao}" for="aceite3" />
+					</h:column>
+
+				</h:dataTable>
+
+				<p:commandButton update="tabela"
+					oncomplete="dialogGerPontosVolta.hide();" immediate="true"
+					actionListener="#{linhaBean.adicionarLinha}" value="Salvar" />
+				<p:commandButton update="tabela"
+					oncomplete="dialogGerPontosVolta.hide();"
+					action="#{linhaBean.gerenciarLinha}" value="Voltar" />
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+
+</h:body>
+</html>

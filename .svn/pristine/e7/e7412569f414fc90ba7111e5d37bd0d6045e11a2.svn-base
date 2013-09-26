@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<style type="text/css">
+#mapa {
+	width: 400px;
+	height: 400px;
+}
+
+.center {
+	position: relative;
+	left: 30%;
+	top: 10%;
+}
+</style>
+	<title>Buscar por Origem e Destino</title>
+	<script type="text/javascript"
+		src="http://maps.google.com/maps/api/js?sensor=true"></script>
+</h:head>
+<h:body>
+	<h:form id="busca-por-origem-destinofForm">
+		<p:panel header="Busca Por Linha" id="busca-por-origem-destinoPanel">
+			<h:panelGrid columns="5" cellpadding="5">
+				<h:outputLabel value="Origem:" for="origem" />
+				<p:autoComplete id="origem" value="#{linhaBean.origem}"
+					completeMethod="#{linhaBean.completeO}" />
+					<h:outputLabel value="Destino:" for="destino" />
+				<p:autoComplete id="destino" value="#{linhaBean.destino}"
+					completeMethod="#{linhaBean.completeD}" />
+				<p:commandLink id="acao-pesquisar" title="Pesquisar"
+					actionListener="#{linhaBean.pesquisarPorOrigemDestino}"
+					update=":formResultado:tabelaResultado" immediate="true">
+					<p:graphicImage value="/img/search-24x24.png" />
+				</p:commandLink>
+			</h:panelGrid>
+
+		</p:panel>
+	</h:form>
+	<h:form id="formResultado">
+		<p:panel header="Resultado" id="resultadoPanel">
+			<p:dataTable id="tabelaResultado" var="linhaR"
+				value="#{linhaBean.linhasResultadoPesquisa}">
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Codigo da Linha" />
+					</f:facet>
+					<h:outputText value="#{linhaR.codigoLinha}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Inicio" />
+					</f:facet>
+					<h:outputText value="#{linhaR.inicio}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Fim" />
+					</f:facet>
+					<h:outputText value="#{linhaR.fim}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Tarifa" />
+					</f:facet>
+					<h:outputText value="#{linhaR.tarifa}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Quant. Onibus" />
+					</f:facet>
+					<h:outputText value="#{linhaR.qtdOnibus}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Distancia" />
+					</f:facet>
+					<h:outputText value="#{linhaR.distancia}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Ida" />
+					</f:facet>
+					<p:commandLink id="ida" title="Ida">
+						<p:graphicImage value="/img/right_arrow-24x24.png" />
+					</p:commandLink>
+					<p:overlayPanel id="idaPanel" for="ida" hideEffect="fade"
+						dynamic="true" at="botton">
+						<p:dataTable id="tableIda" var="ptIda" value="#{linhaR.pontosIda}">
+							<p:column headerText="Descricao">
+								<h:outputText style="font-size: 10px;"
+									value="#{ptIda.descricao}" />
+							</p:column>
+						</p:dataTable>
+					</p:overlayPanel>
+
+					<p:commandLink id="showMapIda" title="Mostar Mapa da Ida"
+						actionListener="#{linhaBean.markMapIda}" immediate="true"
+						update=":formMapa:gmap" style="padding-left: 10px;">
+						<p:graphicImage value="/img/gmap-icon.jpg" />
+					</p:commandLink>
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Volta" />
+					</f:facet>
+					<p:commandLink id="volta" title="Volta">
+						<p:graphicImage value="/img/left_arrow-24x24.png" />
+					</p:commandLink>
+					<p:overlayPanel id="voltaPanel" for="volta" hideEffect="fade"
+						dynamic="true" at="botton">
+						<p:dataTable id="tableVolta" var="ptVolta"
+							value="#{linhaR.pontosVolta}">
+							<p:column headerText="Descricao">
+								<h:outputText style="font-size: 10px;"
+									value="#{ptVolta.descricao}" />
+							</p:column>
+						</p:dataTable>
+					</p:overlayPanel>
+
+					<p:commandLink id="showMapVolta" title="Mostar Mapa da Volta"
+						actionListener="#{linhaBean.markMapVolta}" immediate="true"
+						update=":formMapa:gmap" style="padding-left: 10px;">
+						<p:graphicImage value="/img/gmap-icon.jpg" />
+					</p:commandLink>
+
+				</p:column>
+
+			</p:dataTable>
+		</p:panel>
+		
+					<h:inputHidden id="lat" value="#{linhaBean.lat}" />
+					<h:inputHidden id="lng" value="#{linhaBean.lng}" />
+	</h:form>
+	<h:form id="formMapa" class="center">
+		<p:outputPanel id="mapaPanel" autoUpdate="true">
+		
+		<p:growl id="growl" showDetail="true"/>  
+		
+			<p:gmap id="gmap" center="-5.794483,-35.21106" zoom="12"
+				type="ROADMAP" style="width:600px;height:400px"
+				model="#{linhaBean.simpleModel}" 
+				
+				>
+				<p:ajax event="overlaySelect" listener="#{linhaBean.onMarkerSelect}" update="growl" oncomplete="dlg.show()"/>
+			</p:gmap>
+
+			<p:dialog widgetVar="dlg" showEffect="fade">
+				
+					<h:panelGrid columns="2">
+						<h:outputLabel for="title" value="Adicione uma referencia para esse ponto:" />
+						<p:inputText id="title" value="#{linhaBean.title}" />
+
+						<f:facet name="footer">
+							<p:commandButton value="Adicionar"
+								actionListener="#{linhaBean.addRef}" />
+							<p:commandButton value="Cancel" onclick="return cancel()" />
+						</f:facet>
+					</h:panelGrid>
+				
+			</p:dialog>
+
+
+		</p:outputPanel>
+	</h:form>
+
+
+
+</h:body>
+</html>

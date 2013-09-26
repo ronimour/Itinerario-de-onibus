@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>Pesquisa de linhas</title>
+        <link type="text/css" rel="stylesheet" href="south-street/theme.css" />
+    </h:head>
+    <h:body>
+	<p:layout fullPage="true">  
+	  
+	    <p:layoutUnit position="north" size="100" header="Top" resizable="true" closable="true" collapsible="true">  
+	        <h:outputText value="North unit content." />  
+	    </p:layoutUnit>  
+	  
+	    <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">  
+	        <h:outputText value="South unit content." />  
+	    </p:layoutUnit>  
+	  
+	    <p:layoutUnit position="west" size="200" header="Left" resizable="true" closable="true" collapsible="true">  
+	        <h:outputText value="West unit content." />  
+	    </p:layoutUnit>  
+	  
+	  
+	    <p:layoutUnit position="center">  
+	        <h:form>  
+	        	<h:outputLabel for="linhaPesquisa" value="linha:" />
+	           <h:inputText  id="linhaPesquisa" value="linhaBean.linhaPesquisa" />  
+	           <p:commandButton actionListener="#{linhaBean.pesquisarPorLinhaAjax}" immediate="true" update="tabela" value="Pesquisar" />
+	           <br/>
+	           <br/>
+	           <p:dataTable id="tabela" var="linha" value="#{linhaBean.linhas}" paginator="true" rows="3" >
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Linha"/>
+                            </f:facet>
+                            <h:outputText value="#{linha.codigoLinha}" />
+                        </p:column>
+            	</p:dataTable>
+	        </h:form>
+	        <br/>
+	          
+	    </p:layoutUnit>  
+	  
+	</p:layout>  
+ 
+    </h:body>
+</html>

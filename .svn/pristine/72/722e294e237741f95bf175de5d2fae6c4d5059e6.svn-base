@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+<h:head>
+	<title>Gerenciador de Itinerarios</title>
+	<link type="text/css" rel="stylesheet" href="trontastic/theme.css" />
+</h:head>
+<h:body>
+	<p:layout position="center"  width="400" height="400" header="Gerenciar pontos" >
+	<h1>Gerenciador de Itinerarios</h1>
+		<h:form id="addPonto">
+		<h:message for="addPonto" ></h:message><br/>
+				<h:outputLabel for="descricao" value="Descrição:" /> 
+				<h:inputText id="descricao" value="#{pontoBean.ponto.descricao}" /><br/>
+				<h:outputLabel for="latitude" value="Latitude:" />  
+				<h:inputText id="latitude" value="#{pontoBean.ponto.latitude}" /><br/>
+				<h:outputLabel for="longitude" value="longitude:" />  		
+				<h:inputText value="#{pontoBean.ponto.longitude}" /><br/>			
+				<h:commandButton action="#{pontoBean.adicionar}" value="Inserir Ponto" /><br/>
+				<h:commandLink action="gerenciarPontoOnibus" value="Voltar" /><br/>
+		</h:form>
+	</p:layout>
+</h:body>
+</html>

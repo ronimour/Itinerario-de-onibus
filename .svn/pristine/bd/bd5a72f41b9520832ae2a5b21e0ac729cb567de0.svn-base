@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Gerenciador de Empresas</title>
+	<link type="text/css" rel="stylesheet" href="trontastic/theme.css" />
+</h:head>
+<h:body>
+	<h:form id="formPrincipal">	
+	Cadastrar Nova Empresa--
+ 	<p:commandLink id="acao-cadastrar" oncomplete="dialogCadastrar.show()">
+			<p:graphicImage value="/img/add-24x24.png" />
+		</p:commandLink><br/>
+		<p:messages id="messages" showDetail="true" autoUpdate="true"
+			closable="true" /><br/>
+		<p:dataTable var="emp" value="#{empresaBean.empresas}"
+			id="tabelaEmpresas"
+			style="width: 530px;">
+			<f:facet name="header">Lista de Empresas Cadastradas</f:facet>
+			<p:column headerText="Nome" style="width: 100px;">
+				<h:outputText value="#{emp.nome}" />
+			</p:column>
+			<p:column headerText="Ações" style="text-align: center;
+												width: 30px;">
+				<p:commandLink id="acao-alterar" title="Alterar"
+					update=":formAlterar:Alterar" oncomplete="dialogAlterar.show()"
+					immediate="true"
+					style="padding-left: 10px;padding-right: 10px;" >
+					<p:graphicImage value="/img/update-24x24.png" />
+					<f:setPropertyActionListener target="#{empresaBean.empresa}"
+						value="#{emp}" />
+				</p:commandLink>
+				<p:commandLink id="acao-excluir" title="Excluir"
+					update=":formExcluir:Excluir" oncomplete="confirmation.show()"
+					immediate="true">
+					<p:graphicImage value="/img/delete-24x24.png" />
+					<f:setPropertyActionListener target="#{empresaBean.empresa}"
+						value="#{emp}" />
+				</p:commandLink>
+			</p:column>
+		</p:dataTable>
+		
+		<br />
+	</h:form>
+
+	<!-- Formulario com dialogo modal para alteracao de empresa -->
+
+	<h:form id="formAlterar">
+		<p:dialog header="Alterar" widgetVar="dialogAlterar" modal="true"
+			id="Alterar">
+			<p:panelGrid id="panelAlterar" columns="2">
+				<h:outputText value="Nome:" />
+				<p:inputText id="nome" value="#{empresaBean.empresa.nome}" />
+				<h:outputText value="Cnpj:" />
+				<p:inputText id="cnpj" value="#{empresaBean.empresa.cnpj}" />
+				<h:outputText value="Endereco:" />
+				<p:inputText id="endereco" value="#{empresaBean.empresa.endereco}" />
+				<h:outputText value="Telefone:" />
+				<p:inputText id="telefone" value="#{empresaBean.empresa.telefone}" />
+				<h:outputText value="Site:" />
+				<p:inputText id="site" value="#{empresaBean.empresa.site}" />
+				<h:outputText value="Email:" />
+				<p:inputText id="email" value="#{empresaBean.empresa.email}" />
+			</p:panelGrid>
+			<p:commandButton id="button-alterar" value="Alterar"
+				actionListener="#{empresaBean.alterarEmpresa}"
+				update=":formPrincipal:tabelaEmpresas"
+				oncomplete="dialogAlterar.hide()" immediate="true" />
+		</p:dialog>
+	</h:form>
+
+	<!-- Formulario com dialogo modal para insercao de empresa -->
+
+	<h:form id="formCadastrar">
+		<p:dialog header="Cadastrar" widgetVar="dialogCadastrar" modal="true">
+			<p:panelGrid id="panelCadastrar" columns="2">
+				<h:outputText value="Nome:" />
+				<p:inputText id="nome" value="#{empresaBean.empresa.nome}" />
+				<h:outputText value="Cnpj:" />
+				<p:inputText id="cnpj" value="#{empresaBean.empresa.cnpj}" />
+				<h:outputText value="Endereco:" />
+				<p:inputText id="endereco" value="#{empresaBean.empresa.endereco}" />
+				<h:outputText value="Telefone:" />
+				<p:inputText id="telefone" value="#{empresaBean.empresa.telefone}" />
+				<h:outputText value="Site:" />
+				<p:inputText id="site" value="#{empresaBean.empresa.site}" />
+				<h:outputText value="Email:" />
+				<p:inputText id="email" value="#{empresaBean.empresa.email}" />
+			</p:panelGrid>
+			<p:commandButton id="button-cadastrar" value="Cadastrar"
+				actionListener="#{empresaBean.adicionarEmpresa}"
+				update=":formPrincipal:tabelaEmpresas"
+				oncomplete="dialogCadastrar.hide()" immediate="true" />
+		</p:dialog>
+	</h:form>
+
+	<!-- Formulario com dialogo modal para exclusao de empresa -->
+
+	<h:form id="formExcluir">
+		<p:confirmDialog id="Excluir"
+			message="Você gostaria de Deletar o #{empresaBean.empresa.nome}?"
+			header="Excluir" severity="alert" widgetVar="confirmation">
+
+			<p:commandButton id="confirm" value="Sim"
+				oncomplete="confirmation.hide()"
+				actionListener="#{empresaBean.excluirEmpresa}"
+				update=":formPrincipal:tabelaEmpresas" immediate="true" />
+			<p:commandButton id="decline" value="Não"
+				onclick="confirmation.hide()" type="button" />
+
+		</p:confirmDialog>
+	</h:form>
+
+
+
+</h:body>
+</html>

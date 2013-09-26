@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>Gerenciador de Empresas</title>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="left" width="200" header="Atividades" resizable="true" closable="true" collapsible="true">
+                <h:form prependId="false">
+                    <p:commandButton value="Novo Empresa" actionListener="#{empresaBean.prepararAdicionarEmpresa}" update="infosEmpresa" oncomplete="dialogGerEmpresa.show()"/>
+                </h:form>
+            </p:layoutUnit>
+            <p:layoutUnit position="center" header="Empresas" width="600" resizable="true" closable="true" collapsible="false" >
+                <h1>Gerenciador de Empresas</h1>
+                <br/>
+                <h:form prependId="false">
+                    <p:dataTable id="tabela" var="empresa" value="#{empresaBean.empresas}" sortModel="multiple" rows="5" paginator="true" >
+                        <p:column sortBy="#{empresa.nome}" >
+                            <f:facet name="header">
+                                <h:outputText value="Nome"/>
+                            </f:facet>
+                            <h:outputText value="#{empresa.nome}" />
+                        </p:column>
+                        <p:column sortBy="#{empresa.cnpj}">
+                            <f:facet name="header">
+                                <h:outputText value="CNPJ"/>
+                            </f:facet>
+                            <h:outputText value="#{empresa.cnpj}"/>
+                        </p:column>
+                        <p:column sortBy="#{empresa.endereco}">
+                            <f:facet name="header">
+                                <h:outputText value="Endereço"/>
+                            </f:facet>
+                            <h:outputText value="#{empresa.endereco}" />
+                        </p:column>
+                        <p:column sortBy="#{empresa.telefone}">
+                            <f:facet name="header">
+                                <h:outputText value="Telefone"/>
+                            </f:facet>
+                            <h:outputText value="#{empresa.telefone}"/>
+                        </p:column>
+                        <p:column sortBy="#{empresa.site}" >
+                            <f:facet name="header">
+                                <h:outputText value="Site"/>
+                            </f:facet>
+                            <h:outputLink value="#{empresa.site}">
+                            <h:outputText value="#{empresa.site}"/>
+                        	</h:outputLink>
+                        </p:column>
+                        <p:column >
+                            <f:facet name="header">
+                                <h:outputText value="Alterar"/>
+                            </f:facet>
+                            <p:commandButton actionListener="#{empresaBean.prepararAlterarEmpresa}" value="Alterar" update="tabela" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Excluir"/>
+                            </f:facet>
+                            <p:commandButton actionListener="#{empresaBean.excluirEmpresa}" value="Excluir" update="tabela" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:layoutUnit>
+        </p:layout>
+ 
+        <p:dialog header="Gerencia de Empresa" widgetVar="dialogGerEmpresa"  resizable="false" modal="true" showEffect="slide" width="500">
+            <h:form prependId="false">
+                <h:panelGrid id="infosEmpresa" columns="2" style="margin-bottom:10px">
+ 
+                    <h:outputLabel for="nome" value="Nome:" />
+                    <h:inputText id="nome" value="#{empresaBean.empresa.nome}"/>
+ 
+                    <h:outputLabel for="cnpj" value="CNPJ:" />
+                    <h:inputText id="cnpj" value="#{empresaBean.empresa.cnpj}"/>
+ 
+                    <p:commandButton update="tabela" oncomplete="dialogGerEmpresa.hide();" actionListener="#{empresaBean.adicionarEmpresa}" value="Inserir Empresa"/>
+                    <p:commandButton update="tabela" oncomplete="dialogGerEmpresa.hide();" actionListener="#{empresaBean.alterarEmpresa}" value="Alterar Empresa"/>
+ 
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+ 
+    </h:body>
+</html>

@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>Gerenciador de Ponto de ônibus</title>
+        <link type="text/css" rel="stylesheet" href="south-street/theme.css" />
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="left" width="200" header="Atividades" resizable="true" closable="true" collapsible="true">
+                <h:form prependId="false">
+                    <p:commandButton value="Novo Ponto de ônibus" actionListener="#{pontoBean.prepararAdicionarPonto}" update="infosPonto2" oncomplete="dialogGerPonto2.show()"/>
+                </h:form>
+            </p:layoutUnit>
+            <p:layoutUnit position="center">
+                <h1>Gerenciador de Ponto de ônibus</h1>
+                <br/>
+                <h:form prependId="false">
+                    <p:dataTable id="tabela" var="ponto" value="#{pontoBean.pontos}">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Descrição"/>
+                            </f:facet>
+                            <h:outputText value="#{ponto.descricao}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Latitude: "/>
+                            </f:facet>
+                            <h:outputText value="#{ponto.latitude}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Longitude: "/>
+                            </f:facet>
+                            <h:outputText value="#{ponto.longitude}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Alterar"/>
+                            </f:facet>
+                            <p:commandButton actionListener="#{pontoBean.prepararAlterarPonto}" value="Alterar" update="infosPonto"  oncomplete="dialogGerPonto.show()" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Excluir"/>
+                            </f:facet>
+                            <p:commandButton actionListener="#{pontoBean.excluirPonto}" value="Excluir" update="tabela" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:layoutUnit>
+        </p:layout>
+ 
+        <p:dialog header="Gerencia de Ponto de Ônibus" widgetVar="dialogGerPonto"  resizable="false" modal="true" showEffect="slide" width="500">
+            <h:form prependId="false">
+                <h:panelGrid id="infosPonto" columns="2" style="margin-bottom:10px">
+ 
+                    <h:outputLabel for="descricao" value="Descrição:" />
+                    <h:inputText id="descricao" value="#{pontoBean.ponto.descricao}"/>
+ 
+                    <h:outputLabel for="latitude" value="Latitude:" />
+                    <h:inputText id="latitude" value="#{pontoBean.ponto.latitude}"/>
+                    
+                    <h:outputLabel for="longitude" value="Longitude:" />
+                    <h:inputText id="longitude" value="#{pontoBean.ponto.longitude}"/>
+ 
+ 					<p:commandButton update="tabela" oncomplete="dialogGerPonto.hide();" actionListener="#{pontoBean.alterarPonto}" value="Alterar"/>
+                    <p:commandButton update="tabela" oncomplete="dialogGerPonto.hide();" action="#{pontoBean.gerenciarPonto}" value="Voltar"/>
+ 					
+ 					
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Gerencia de Ponto de Ônibus" widgetVar="dialogGerPonto2"  resizable="false" modal="true" showEffect="slide" width="500">
+            <h:form prependId="false">
+                <h:panelGrid id="infosPonto2" columns="2" style="margin-bottom:10px">
+ 
+                    <h:outputLabel for="descricao2" value="Descrição:" />
+                    <h:inputText id="descricao2" value="#{pontoBean.ponto.descricao}"/>
+ 
+                    <h:outputLabel for="latitude2" value="Latitude:" />
+                    <h:inputText id="latitude2" value="#{pontoBean.ponto.latitude}"/>
+                    
+                    <h:outputLabel for="longitude2" value="Longitude:" />
+                    <h:inputText id="longitude2" value="#{pontoBean.ponto.longitude}"/>
+ 
+ 					
+ 					<p:commandButton update="tabela" oncomplete="dialogGerPonto2.hide();" actionListener="#{pontoBean.adicionarPonto}" value="Inserir"/>
+                    <p:commandButton update="tabela" oncomplete="dialogGerPonto2.hide();" action="#{pontoBean.gerenciarPonto}" value="Voltar"/>
+ 					
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+ 
+    </h:body>
+</html>

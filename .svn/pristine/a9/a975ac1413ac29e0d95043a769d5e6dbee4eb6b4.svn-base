@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"   
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Gerenciador de Empresas</title>
+        <link type="text/css" rel="stylesheet" href="dot-luv/theme.css" />
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="left" width="200" header="Atividades" resizable="true" closable="true" collapsible="true">
+                <h:form prependId="false">
+                    <h:commandLink value="Novo Empresa" action="#{empresaMB.prepararAdicionarEmpresa}" />
+                </h:form>
+            </p:layoutUnit>
+            <p:layoutUnit position="center">
+                <h1>Gerenciador de Empresas</h1>
+                <br/>
+                <h:form prependId="false">
+                    <p:dataTable id="tabela" var="empresa" value="#{empresaMB.empresas}">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nome"/>
+                            </f:facet>
+                            <h:outputText value="#{empresa.nome}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="CNPJ"/>
+                            </f:facet>
+                            <h:outputText value="#{empresa.cnpj}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Alterar"/>
+                            </f:facet>
+                            <h:commandLink action="#{empresaMB.prepararAlterarEmpresa}" value="Alterar"  />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Excluir"/>
+                            </f:facet>
+                            <h:commandLink action="#{empresaMB.excluirEmpresa}" value="Excluir" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:layoutUnit>
+
+		<p:layoutUnit position="right"  width="200" header="Nova Empresa" resizable="true" closable="true" collapsible="true" >
+			<h:form prependId="false">
+				<h:panelGrid id="infosEmpresa" columns="2"
+					style="margin-bottom:10px">
+
+					<h:outputLabel for="nome" value="Nome:" />
+					<h:inputText id="nome" value="#{empresaMB.empresa.nome}" />
+
+					<h:outputLabel for="cnpj" value="CNPJ:" />
+					<h:inputText id="cnpj" value="#{empresaMB.empresa.cnpj}" />
+
+					<h:commandButton action="#{empresaMB.adicionarEmpresa}"
+						value="Inserir Empresa" />
+					<h:commandButton action="#{empresaMB.alterarEmpresa}"
+						value="Alterar Empresa" />
+
+				</h:panelGrid>
+			</h:form>
+		</p:layoutUnit>
+
+	</p:layout>
+ 
+        
+ 
+    </h:body>
+</html>
